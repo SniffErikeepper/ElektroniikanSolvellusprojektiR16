@@ -31,6 +31,7 @@ int main(void) {
     st7735_init();
     char buffer[20];
     sei(); // tästä eteenpäin sallitaan keskytykset
+    st7735_fill_rect(0, 0, 160, 128, ST7735_COLOR_BLACK);
     
     //ikiluuppi
     while (1) {
