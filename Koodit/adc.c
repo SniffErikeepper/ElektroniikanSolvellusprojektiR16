@@ -56,7 +56,7 @@ float rms_to_db(uint16_t rms){   // tarvii parantelua
 void adcPrintLoop(void){
        if(btn_event){   //Aina kun nappi keskeytys tapahtuu mennään seuraavalle tasolle LOW->MID->HIGH->LOW
             _delay_ms(20); // debounce odottelu
-            if (!(PINB & (1 << PINB0))) {
+            if (!(PINC & (1 << PINC1))) {
             if (curRefLevel == LOW) curRefLevel = MID;  
             else if (curRefLevel == MID) curRefLevel = HIGH;
             else curRefLevel = LOW; 
@@ -91,7 +91,7 @@ void adcPrintLoop(void){
             maxdb = db;
         }
         dtostrf(maxdb,6,2,dbmax);
-
+        st7735_fill_rect(0,0,128,160,ST7735_COLOR_BLACK);
         st7735_draw_text(5, 30, "Desibelit: ",&FreeSans, 1, ST7735_COLOR_CYAN);
         st7735_draw_text(5, 50, buffer,&FreeSans, 1, ST7735_COLOR_CYAN);
         st7735_draw_text(5, 110, "ADC value: ",&FreeSans, 1, ST7735_COLOR_RED);
@@ -101,5 +101,5 @@ void adcPrintLoop(void){
         st7735_draw_text(60, 70, "Max db: ",&FreeSans, 1, ST7735_COLOR_RED);
         st7735_draw_text(60, 90, dbmax,&FreeSans, 1, ST7735_COLOR_BLUE);
         _delay_ms(1500);
-        st7735_fill_rect(0,0,128,160,ST7735_COLOR_BLACK);
+        
     }

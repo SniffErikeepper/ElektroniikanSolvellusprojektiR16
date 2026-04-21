@@ -11,8 +11,6 @@
 #include "st7735_gfx.h"
 #include "st7735_font.h"
 
-//#define LED_PIN PD4 // debuggia varten vaan. poistetaan lopullisesta
-
 volatile uint8_t btn_state = 1; 
 volatile uint8_t btn_event = 0;
 volatile float maxdb = 0;
@@ -20,11 +18,10 @@ volatile float maxdb = 0;
 
 int main(void) {
     // setuppi
-    PCICR |= (1 << PCIE0);
-    PCMSK0 |= (1 << PCINT0);
-   // DDRD |= (1 << LED_PIN); // PD0 pinni outputiksi
-    DDRB &= ~(1 << DDB0); // rekisteriin tuolle bitille 0, nappipinni inputiksi
-    PORTB |= (1 << PORTB0); // ylösvetovastus päälle
+    PCICR |= (1 << PCIE1);
+    PCMSK1 |= (1 << PCINT9);
+    DDRC &= ~(1 << DDC1); // rekisteriin tuolle bitille 0, nappipinni inputiksi
+    PORTC |= (1 << PORTC1); // ylösvetovastus päälle
     uart_init(UBRR_VALUE);
     adc_init();
     spi_init();
@@ -45,6 +42,10 @@ int main(void) {
                 }
                 if(timer >= 10){
                     maxdb = 0; 
+                    while(1){
+                        if(btn_event) break;
+                    }
+                    
                     break;
                 }
             }
@@ -52,8 +53,8 @@ int main(void) {
     }
 }
 
-ISR(PCINT0_vect) {
-    if (!(PINB & (1 << PINB0))) {
+ISR(PCINT1_vect) {
+    if (!(PINC & (1 << PINC1))) {
         btn_event = 1;
     }
 }
